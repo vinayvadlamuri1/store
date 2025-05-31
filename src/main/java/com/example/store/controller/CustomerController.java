@@ -4,9 +4,7 @@ import com.example.store.dto.CustomerDTO;
 import com.example.store.entity.Customer;
 import com.example.store.mapper.CustomerMapper;
 import com.example.store.repository.CustomerRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,4 +28,11 @@ public class CustomerController {
     public CustomerDTO createCustomer(@RequestBody Customer customer) {
         return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
     }
+
+    @GetMapping("/search")
+    public List<CustomerDTO> searchCustomers(@RequestParam String name) {
+        return customerRepository.findByNameContainingIgnoreCase(name)
+                .stream().map(customerMapper::customerToCustomerDTO).toList();
+    }
+
 }

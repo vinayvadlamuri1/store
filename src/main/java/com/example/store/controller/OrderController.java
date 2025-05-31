@@ -4,9 +4,7 @@ import com.example.store.dto.OrderDTO;
 import com.example.store.entity.Order;
 import com.example.store.mapper.OrderMapper;
 import com.example.store.repository.OrderRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,4 +28,12 @@ public class OrderController {
     public OrderDTO createOrder(@RequestBody Order order) {
         return orderMapper.orderToOrderDTO(orderRepository.save(order));
     }
+
+    @GetMapping("/{id}")
+    public OrderDTO getOrderById(@PathVariable Long id) {
+        return orderRepository.findById(id)
+                .map(orderMapper::orderToOrderDTO)
+                .orElse(null);
+    }
+
 }
